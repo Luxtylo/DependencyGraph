@@ -54,6 +54,15 @@ graph.add_nodes_from(nodes)
 graph.add_edges_from(edges)
 
 graph.graph_attr["label"] = "Test Graph"
+graph.graph_attr["labeljust"] = "l"
+graph.graph_attr["labelloc"] = "t"
+graph.graph_attr["labelfontname"] = "Arial"
+graph.graph_attr["labelfontsize"] = "16"
+
+graph.node_attr["fontname"] = "Arial"
+graph.node_attr["fontsize"] = "12"
+graph.node_attr["labeljust"] = "l"
+
 graph.node_attr["shape"] = "box"
 
 graph.layout(prog="dot")

@@ -27,13 +27,11 @@ def make_node_string(entry):
     node_string = ""
     node_string += entry[0]
 
-    # Uncomment to include node type
-    """if entry[3] is not None:
-        node_string += "\n" + entry[3]"""
+    if entry[3] is not None:
+        node_string += "\\n" + entry[3]
     
-    # Uncomment to include description
-    """if entry[1] is not None:
-        node_string += "\n\n" + entry[1]"""
+    if entry[1] is not None:
+        node_string += "\\n\\n" + entry[1]
 
     return node_string
 
@@ -50,7 +48,7 @@ def parse_csv(csv_loc):
         for line in csv_content:
             if first_line != True and line[0] != "":
                 node_id = line[0]
-                node_text = line[1]
+                node_text = line[1].replace("\n", "\\n")
                 link_to = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
                 node_type = line[3] if line[3] != "" else None
                 data.append([node_id, node_text, link_to, node_type])
