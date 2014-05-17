@@ -23,7 +23,21 @@ import csv
 # Replace this with whatever DOORS uses in its CSV files
 LINK_SPLIT_CHAR = "|"
 
-def open_csv(csv_loc):
+def make_node_string(entry):
+    node_string = ""
+    node_string += entry[0]
+
+    # Uncomment to include node type
+    """if entry[3] is not None:
+        node_string += "\n" + entry[3]"""
+    
+    # Uncomment to include description
+    """if entry[1] is not None:
+        node_string += "\n\n" + entry[1]"""
+
+    return node_string
+
+def parse_csv(csv_loc):
     with open(csv_loc, "r") as csv_file:
         csv_content = csv.reader(
                 csv_file,
@@ -38,11 +52,17 @@ def open_csv(csv_loc):
                 node_id = line[0]
                 node_text = line[1]
                 link_to = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
-                node_type = line[3]
-                print(node_id, link_to)
+                node_type = line[3] if line[3] != "" else None
+                data.append([node_id, node_text, link_to, node_type])
 
             elif first_line == True:
                 first_line = False
 
+        for n in range(len(data)):
+            node_string = make_node_string(data[n])
+            data[n].append(node_string)
+
+        return data
+
 if __name__ == "__main__":
-    open_csv("example_data.csv")
+    parse_csv("example_data.csv")

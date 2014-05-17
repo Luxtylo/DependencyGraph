@@ -34,7 +34,7 @@ graph.add_edge("b", "d")
 graph.add_edge("a", "d")
 
 graph.graph_attr["label"] = "Test Graph"
-graph.node_attr["shape"] = "square"
+graph.node_attr["shape"] = "box"
 
 graph.layout(prog="dot")
 graph.draw("test.png")

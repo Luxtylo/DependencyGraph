@@ -19,4 +19,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 """
 
 import pygraphviz as pgv
+import open_csv
 
+# Each entry stored as id, text, links, type, string
+data = open_csv.parse_csv("example_data.csv")
+
+nodes = []
+edges = []
+
+for entry in data:
+    nodes.append(entry[-1])
+
+def find_node(link):
+    """Takes a node id and finds the node index"""
+    for j in range(len(data)):
+        entry = data[j]
+        if entry[0] == link:
+            break
+    return j
+
+for i in range(len(nodes)):
+    links = data[i][2]
+
+    if links is not None:
+        for link in links:
+            from_node = data[i][-1]
+            to_node_index = find_node(link)
+            to_node = data[to_node_index][-1]
+            edges.append((from_node, to_node))
+
+graph = pgv.AGraph(directed=True)
+
+graph.add_nodes_from(nodes)
+graph.add_edges_from(edges)
+
+graph.graph_attr["label"] = "Test Graph"
+graph.node_attr["shape"] = "box"
+
+graph.layout(prog="dot")
+graph.draw("test.svg")
