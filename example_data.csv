@@ -1,0 +1,30 @@
+Object ID,Object Text,Link to,Reqt/Inf /SyDD Type
+Dummy Top,Dummy Top,,
+ECU15563,Convert F1 Detent Posn into equivalent nominal PDU angular posn demand,Dummy Top,Cust Reqt
+SyRS-4206,The SFECU Channel's response to a Valid Lever Movement shall be to indicate a Valid Lever Command has been received providing that the Flight Leg of SyRS-6168 is not ?Unknown?,ECU15563,Requirement
+SyDD1534,"For the selected F1 Detent Position there exists a related PDU angular position to which the system must be driven (and monitored against), known as the Demanded Position. 
+The Demanded Position is obtained by lookup of the selected Detent PDU Positions on receipt of a Valid Lever Command (see below). 
+ 
+The lookup requires the following: 
+ 
+F1 Detent Position (see SyDD-1880) 
+Detent PDU Position Selection (see SyDD-1881) 
+ 
+It is a project decision to generate the Demanded Position in the 'Interpret Pilot Inputs' (IPI) function:- 
+[RATIONALE: IPI is selected as a dissimilar S/W function inline with system monitoring (to meet integrity requirements).  Position-error monitoring e.g. runaway needs the Demanded Position.] ",SyRS-4206,Design Statement
+SyRS-1408,Initial SFECU deliveries i.e. varient 0 shall provide the Detent PDU Positions defined at SyRS-4209,ECU15563,Requirement
+SwRS4206,SwRS4206,SyRS-4206,Requirement
+,,,
+,,,
+SyDD1398,"When the SFECU channel is in reset then: 
+All PLDs shall be reset 
+The processor shall be reset (software is disabled) 
+ARINC429 Transmitters shall be disabled 
+HCDOs shall be disabled (high impedance) 
+Set EHSV drive to 0mA demand... ",SyRS2371,Detailed Design
+SyRS2371,"Whilst performing hardware initialisation the SFECU channel shall set its EHSV
+drive to 0mA demand and all HCDO's to off.",ECU15563,Requirement
+SyRS2296,When in the hardware RESET State the SFECU channel shall :-,SyDD1398,ReqtDerived
+SyRS2298,"The following items or events shall cause the nRESET to be LOW in either SFECU
+lane :-
+1) PSM 5V rail out of acceptable tolerance.",SyDD1398,ReqtDerived
