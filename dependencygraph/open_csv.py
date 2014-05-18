@@ -48,7 +48,7 @@ def parse_csv(csv_loc):
         for line in csv_content:
             if first_line != True and line[0] != "":
                 node_id = line[0]
-                node_text = line[1].replace("\n", "\\n")#.replace("\"", "\\\"")
+                node_text = line[1].replace("\n", "\\n")
                 link_to = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
                 node_type = line[3] if line[3] != "" else None
                 data.append([node_id, node_text, link_to, node_type])

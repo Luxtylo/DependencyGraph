@@ -20,51 +20,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 import pygraphviz as pgv
 import open_csv
+import sys
 
+def make_graph(file_loc):
 # Each entry stored as id, text, links, type, string
-data = open_csv.parse_csv("example_data.csv")
+    data = open_csv.parse_csv(file_loc)
 
-nodes = []
-edges = []
+    nodes = []
+    edges = []
 
-for entry in data:
-    nodes.append(entry[-1])
+    for entry in data:
+        nodes.append(entry[-1])
 
-def find_node(link):
-    """Takes a node id and finds the node index"""
-    for j in range(len(data)):
-        entry = data[j]
-        if entry[0] == link:
-            break
-    return j
+    def find_node(link):
+        """Takes a node id and finds the node index"""
+        for j in range(len(data)):
+            entry = data[j]
+            if entry[0] == link:
+                break
+        return j
 
-for i in range(len(nodes)):
-    links = data[i][2]
+    for i in range(len(nodes)):
+        links = data[i][2]
 
-    if links is not None:
-        for link in links:
-            from_node = data[i][-1]
-            to_node_index = find_node(link)
-            to_node = data[to_node_index][-1]
-            #edges.append((from_node, to_node))
-            edges.append((to_node, from_node))
+        if links is not None:
+            for link in links:
+                from_node = data[i][-1]
+                to_node_index = find_node(link)
+                to_node = data[to_node_index][-1]
+                #edges.append((from_node, to_node))
+                edges.append((to_node, from_node))
 
-graph = pgv.AGraph(directed=True)
+    graph = pgv.AGraph(directed=True)
 
-graph.add_nodes_from(nodes)
-graph.add_edges_from(edges)
+    graph.add_nodes_from(nodes)
+    graph.add_edges_from(edges)
 
-graph.graph_attr["label"] = "Test Graph"
-graph.graph_attr["labeljust"] = "l"
-graph.graph_attr["labelloc"] = "t"
-graph.graph_attr["labelfontsize"] = "16"
+    graph.graph_attr["label"] = "Test Graph"
+    graph.graph_attr["labeljust"] = "l"
+    graph.graph_attr["labelloc"] = "t"
+    graph.graph_attr["labelfontsize"] = "16"
 
-graph.node_attr["fontsize"] = "12"
-graph.node_attr["labeljust"] = "l"
-graph.node_attr["shape"] = "box"
+    graph.node_attr["fontsize"] = "12"
+    graph.node_attr["labeljust"] = "l"
+    graph.node_attr["shape"] = "box"
 
-graph.edge_attr["dir"] = "back"
-graph.edge_attr["concentrate"] = "true"
+    graph.edge_attr["dir"] = "back"
+    graph.edge_attr["concentrate"] = "true"
 
-graph.layout(prog="dot")
-graph.draw("test.png")
+    graph.layout(prog="dot")
+    graph.draw("test.png")
+
+if len(sys.argv) > 1:
+    for filename in sys.argv[1:]:
+        try:
+            make_graph(filename)
+        except IOError:
+            print("File " + filename + " does not exist")
+else:
+    print("Give a csv filename as an argument to convert it to a graph")
