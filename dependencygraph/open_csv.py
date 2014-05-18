@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 import csv
 
 # Replace this with whatever DOORS uses in its CSV files
-LINK_SPLIT_CHAR = "|"
+LINK_SPLIT_CHAR = "\n"
 
 def make_node_string(entry):
     node_string = ""

@@ -22,7 +22,7 @@ import pygraphviz as pgv
 import open_csv
 import sys
 
-def make_graph(file_loc):
+def make_graph(file_loc, graph_name):
 # Each entry stored as id, text, links, type, string
     data = open_csv.parse_csv(file_loc)
 
@@ -56,7 +56,8 @@ def make_graph(file_loc):
     graph.add_nodes_from(nodes)
     graph.add_edges_from(edges)
 
-    graph.graph_attr["label"] = "Test Graph"
+    graph.graph_attr["label"] = graph_name
+
     graph.graph_attr["labeljust"] = "l"
     graph.graph_attr["labelloc"] = "t"
     graph.graph_attr["labelfontsize"] = "16"
@@ -69,13 +70,23 @@ def make_graph(file_loc):
     graph.edge_attr["concentrate"] = "true"
 
     graph.layout(prog="dot")
-    graph.draw("test.png")
+    png_name = "".join(file_loc.split(".")[:-1]) + ".png"
+    graph.draw(png_name)
 
 if len(sys.argv) > 1:
-    for filename in sys.argv[1:]:
-        try:
-            make_graph(filename)
-        except IOError:
-            print("File " + filename + " does not exist")
+    filename = sys.argv[1]
+
+    if len(sys.argv) == 2:
+        graph_name = "".join(filename.split(".")[:-1])
+    elif len(sys.argv) == 3:
+        graph_name = sys.argv[-1]
+    else:
+        sys.exit(0)
+
+    try:
+        make_graph(filename, graph_name)
+    except IOError:
+        print("Conversion failed - file " + filename + " does not exist")
+
 else:
     print("Give a csv filename as an argument to convert it to a graph")
