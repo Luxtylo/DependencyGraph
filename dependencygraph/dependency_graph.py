@@ -22,7 +22,25 @@ import pygraphviz as pgv
 import open_csv
 import sys
 
-def make_graph(file_loc, graph_name):
+help_string = """DependencyGraph converts csv files into png graphs using pygraphviz.
+
+The csv files must have a particular structure for each line:  
+  Object ID, Object Text, Link to, Type 
+
+    Object ID is the name which will be shown at the top of the node.
+    Object Text is the text which will appear below the object ID
+    Link to is the object ID of the objects that this node will be linked to. Multiple links can be separated with a newline character
+    Type is the type of entry this node is
+
+Usage:
+  ./dependency_graph.py [csv file] [graph title] [export format]
+
+Options for export format are all those allowed by graphviz.
+  Some common ones are:
+    png, jpg, svg, pdf, eps
+    svg currently acts oddly with fonts - the text extends outside the node boxes"""
+
+def make_graph(file_loc, graph_name, export_format):
 # Each entry stored as id, text, links, type, string
     data = open_csv.parse_csv(file_loc)
 
@@ -70,21 +88,29 @@ def make_graph(file_loc, graph_name):
     graph.edge_attr["concentrate"] = "true"
 
     graph.layout(prog="dot")
-    png_name = "".join(file_loc.split(".")[:-1]) + ".png"
+    png_name = "".join(file_loc.split(".")[:-1]) + "." + export_format
     graph.draw(png_name)
 
 if len(sys.argv) > 1:
     filename = sys.argv[1]
 
     if len(sys.argv) == 2:
+        if sys.argv[-1] == "--help" or sys.argv[-1] == "-h":
+            print(help_string)
+            sys.exit()
         graph_name = "".join(filename.split(".")[:-1])
+        export_format = "png"
     elif len(sys.argv) == 3:
         graph_name = sys.argv[-1]
+        export_format = "png"
+    elif len(sys.argv) == 4:
+        graph_name = sys.argv[2]
+        export_format = sys.argv[3]
     else:
         sys.exit(0)
 
     try:
-        make_graph(filename, graph_name)
+        make_graph(filename, graph_name, export_format)
     except IOError:
         print("Conversion failed - file " + filename + " does not exist")
 

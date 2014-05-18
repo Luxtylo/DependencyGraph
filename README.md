@@ -13,7 +13,13 @@ DependencyGraph converts ``csv`` files into ``png`` graphs using ``pygraphviz``.
 The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.
 
 The program is called with the syntax:  
-``dependency_graph.py [csv file] [Graph name]``  
+``dependency_graph.py [csv file] [Graph name] [export format]``  
 The graph name is optional - if none is given, the ``csv`` file will be used without the ``.csv`` extension.
 
-The output will be a ``png`` with the same name as the original ``csv``
+Options for export format should be all those allowed by graphviz.
+  Some common ones are:
+    png, jpg, svg, pdf, eps
+    svg currently acts oddly with fonts - the text extends outside the node boxes
+
+For help to come up, the program can be called with
+``dependency_graph.py --help`` or ``dependency_graph.py -h``
