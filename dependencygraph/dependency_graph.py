@@ -46,7 +46,8 @@ for i in range(len(nodes)):
             from_node = data[i][-1]
             to_node_index = find_node(link)
             to_node = data[to_node_index][-1]
-            edges.append((from_node, to_node))
+            #edges.append((from_node, to_node))
+            edges.append((to_node, from_node))
 
 graph = pgv.AGraph(directed=True)
 
@@ -56,14 +57,14 @@ graph.add_edges_from(edges)
 graph.graph_attr["label"] = "Test Graph"
 graph.graph_attr["labeljust"] = "l"
 graph.graph_attr["labelloc"] = "t"
-graph.graph_attr["labelfontname"] = "Arial"
 graph.graph_attr["labelfontsize"] = "16"
 
-graph.node_attr["fontname"] = "Arial"
 graph.node_attr["fontsize"] = "12"
 graph.node_attr["labeljust"] = "l"
-
 graph.node_attr["shape"] = "box"
 
+graph.edge_attr["dir"] = "back"
+graph.edge_attr["concentrate"] = "true"
+
 graph.layout(prog="dot")
-graph.draw("test.svg")
+graph.draw("test.png")
