@@ -52,8 +52,14 @@ def parse_csv(csv_loc):
                 node_id = line[0]
                 node_text = line[1].replace("\n", "\\l")
                 node_text = node_text.replace("\r", "\\l") + "\l"
-                link_to = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
-                node_type = line[3] if line[3] != "" else None
+                try:
+                    link_to = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
+                except IndexError:
+                    link_to = None
+                try:
+                    node_type = line[3] if line[3] != "" else None
+                except IndexError:
+                    node_type = None
                 data.append([node_id, node_text, link_to, node_type])
 
             elif first_line == True:
