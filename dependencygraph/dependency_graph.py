@@ -21,26 +21,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 import pygraphviz as pgv
 import open_csv
 import sys
+import argparse
 
-help_string = """DependencyGraph converts csv files into png graphs using pygraphviz.
+parser = argparse.ArgumentParser(description="Convert csv files into graphs")
 
-The csv files must have a particular structure for each line:  
-  Object ID, Object Text, Link to, Type 
+parser.add_argument("file_loc", metavar="file", type=str,
+        help="location of the csv file to be converted")
 
-    Object ID is the name which will be shown at the top of the node.
-    Object Text is the text which will appear below the object ID
-    Link to is the object ID of the objects that this node will be linked to. Multiple links can be separated with a newline character
-    Type is the type of entry this node is
+parser.add_argument("-c", "--csv-help", action="store_true",
+        help="show help about csv formatting")
+parser.add_argument("-n", "--name", type=str, action="store",
+        help="give the graph a custom title")
+parser.add_argument("-f", "--format", action="append", default=[], dest="ex_forms",
+        choices=["png", "jpg", "pdf", "eps", "svg"],
+        help="choose output filetype(s)")
+parser.add_argument("-e", "--exclude", action="append", metavar="TYPE",
+        help="add node types to exclude")
+parser.add_argument("-x", "--cut", action="store_true",
+        help="remove unlinked nodes")
 
-Usage:
-  ./dependency_graph.py [csv file] [graph title] [export format]
-
-Options for export format are all those allowed by graphviz.
-  Some common ones are:
-    png, jpg, svg, pdf, eps
-    svg currently acts oddly with fonts - the text extends outside the node boxes"""
-
-def make_graph(file_loc, graph_name, export_format):
+def make_graph(file_loc, graph_name, export_formats, exclude, cut):
 # Each entry stored as id, text, links, type, string
     data = open_csv.parse_csv(file_loc)
 
@@ -88,31 +88,36 @@ def make_graph(file_loc, graph_name, export_format):
     graph.edge_attr["concentrate"] = "true"
 
     graph.layout(prog="dot")
-    png_name = "".join(file_loc.split(".")[:-1]) + "." + export_format
-    graph.draw(png_name)
+    for ex_for in export_formats:
+        try:
+            export_file_name = "".join(file_loc.split(".")[:-1]) + "." + ex_for
+            graph.draw(export_file_name)
+        except:
+            print("Failed to export graph from " + file_loc + " as " + ex_for)
 
-if len(sys.argv) > 1:
-    filename = sys.argv[1]
+args = parser.parse_args()
 
-    if len(sys.argv) == 2:
-        if sys.argv[-1] == "--help" or sys.argv[-1] == "-h":
-            print(help_string)
-            sys.exit()
-        graph_name = "".join(filename.split(".")[:-1])
-        export_format = "png"
-    elif len(sys.argv) == 3:
-        graph_name = sys.argv[-1]
-        export_format = "png"
-    elif len(sys.argv) == 4:
-        graph_name = sys.argv[2]
-        export_format = sys.argv[3]
-    else:
-        sys.exit(0)
+#def make_graph(file_loc, graph_name, export_formats, exclude, cut):
+#Namespace(csv_help=False, cut=False, exclude=None, file_loc='test.csv', format=[], name=None)
 
-    try:
-        make_graph(filename, graph_name, export_format)
-    except IOError:
-        print("Conversion failed - file " + filename + " does not exist")
+if args.csv_help:
+    print("""DependencyGraph converts csv files into png graphs using pygraphviz. The csv files must have a particular structure for each line:  
+  Object ID, Object Text, Link to, Type  
 
+    Object ID is the name which will be shown at the top of the node.
+    Object Text is the text which will appear below the object ID
+    Link to is the object ID of the objects that this node will be linked to
+      Multiple links can be separated with a \\n
+    Type is the type of entry this node is
+
+  Link to and Type can be left blank
+
+The csv should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.""")
+    sys.exit(0)
 else:
-    print("Give a csv filename as an argument to convert it to a graph")
+    if args.name is None:
+        args.name = "".join(args.file_loc.split(".")[:-1])
+    if args.ex_forms == []:
+        args.ex_forms = ["png"]
+
+    make_graph(args.file_loc, args.name, args.ex_forms, args.exclude, args.cut)
