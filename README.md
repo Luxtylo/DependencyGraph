@@ -12,14 +12,24 @@ DependencyGraph converts ``csv`` files into ``png`` graphs using ``pygraphviz``.
 
 The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.
 
-The program is called with the syntax:  
-``dependency_graph.py [csv file] [Graph name] [export format]``  
-The graph name is optional - if none is given, the ``csv`` file will be used without the ``.csv`` extension.
+The program's help message (Obtained with ``./dependency_graph.py -h``):
+``usage: dependency_graph.py [-h] [-c] [-n NAME] [-f {png,jpg,pdf,eps,svg}]
+                           [-e TYPE] [-x]
+                           file
 
-Options for export format should be all those allowed by graphviz.
-  Some common ones are:
-    png, jpg, svg, pdf, eps
-    svg currently acts oddly with fonts - the text extends outside the node boxes
+Convert csv files into graphs
 
-For help to come up, the program can be called with
-``dependency_graph.py --help`` or ``dependency_graph.py -h``
+positional arguments:
+  file                  location of the csv file to be converted
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -c, --csv-help        show help about csv formatting
+  -n NAME, --name NAME  give the graph a custom title
+  -f {png,jpg,pdf,eps,svg}, --format {png,jpg,pdf,eps,svg}
+                        choose output filetype(s)
+  -e TYPE, --exclude TYPE
+                        add node types to exclude
+  -x, --cut             remove unlinked nodes``
+
+As you can see, I intend to add the ability to exclude certain types of nodes, or all unlinked nodes, from the graph.
