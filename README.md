@@ -13,7 +13,8 @@ DependencyGraph converts ``csv`` files into ``png`` graphs using ``pygraphviz``.
 The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.
 
 The program's help message (Obtained with ``./dependency_graph.py -h``):
-``usage: dependency_graph.py [-h] [-c] [-n NAME] [-f {png,jpg,pdf,eps,svg}]
+```
+usage: dependency_graph.py [-h] [-c] [-n NAME] [-f {png,jpg,pdf,eps,svg}]
                            [-e TYPE] [-x]
                            file
 
@@ -33,3 +34,4 @@ optional arguments:
   -x, --cut             remove unlinked nodes``
 
 As you can see, I intend to add the ability to exclude certain types of nodes, or all unlinked nodes, from the graph.
+```
