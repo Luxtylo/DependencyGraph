@@ -31,7 +31,7 @@ optional arguments:
                         choose output filetype(s)
   -e TYPE, --exclude TYPE
                         add node types to exclude
-  -x, --cut             remove unlinked nodes``
+  -x, --cut             remove unlinked nodes
+```
 
 As you can see, I intend to add the ability to exclude certain types of nodes, or all unlinked nodes, from the graph.
-```
