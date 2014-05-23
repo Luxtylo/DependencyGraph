@@ -29,13 +29,26 @@ def prepare_data(file_loc, exclude, cut):
 
     def find_node(target):
         """When given a node ID, will find the matching node's index"""
+        found = False
         i = 0
         for node in nodes:
             if node == target:
+                found = True
                 break
             else:
                 i += 1
-        return i
+
+        if found == True:
+            return i
+        else:
+            node_dict = {
+                    "id": target,
+                    "links": [],
+                    "type": "Unknown",
+                    "description": None}
+            nodes.append(open_csv.Node(node_dict))
+
+            return len(nodes) - 1
 
     def remove_unlinked(nodes):
         for node in nodes:
