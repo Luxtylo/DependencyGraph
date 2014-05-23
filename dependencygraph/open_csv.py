@@ -38,12 +38,12 @@ class Node:
         node_string = ""
         node_string += self.node_id
 
-        if self.node_type is not None and self.desc is not None:
+        if self.node_type is not None and self.desc is not "":
             node_string += "\\n" + self.node_type
             node_string += "\\r\\n" + self.desc
         elif self.node_type is not None:
             node_string += "\\n" + self.node_type
-        elif self.desc is not None:
+        elif self.desc is not "":
             node_string += "\\n\\n" + self.desc
 
         return node_string
@@ -85,9 +85,9 @@ def parse_csv(csv_loc):
                     node_dict["links"] = []
 
                 try:
-                    node_dict["type"] = line[3] if line[3] != "" else None
+                    node_dict["type"] = line[3] if line[3] != "" else ""
                 except IndexError:
-                    node_dict["type"] = None
+                    node_dict["type"] = ""
 
                 node = Node(node_dict)
                 data.append(node)

@@ -46,7 +46,7 @@ def prepare_data(file_loc, exclude, cut):
                     "id": target,
                     "links": [],
                     "type": "Unknown",
-                    "description": None}
+                    "description": ""}
             nodes.append(open_csv.Node(node_dict))
 
             return len(nodes) - 1
@@ -66,7 +66,12 @@ def prepare_data(file_loc, exclude, cut):
 
     if cut:
         remove_unlinked(nodes)
-    
+
+    if exclude != []:
+        for node in nodes:
+            if node.node_type in exclude:
+                node.visible = False
+
     for node in nodes:
         if node.visible:
             for link in node.links:
@@ -83,7 +88,7 @@ def prepare_data(file_loc, exclude, cut):
             nodes_drawn += 1
             node_strings.append(str(node))
 
-    return (node_strings, edges, nodes_drawn)
+    return (node_strings, edges)
 
 def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
@@ -112,6 +117,8 @@ def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
         except:
             print("Failed to export graph from " + file_loc + " as " + ex_for)
 
+    return len(graph.nodes())
+
 args = argparser.parser.parse_args()
 
 if args.csv_help:
@@ -134,11 +141,13 @@ else:
         args.name = "".join(args.file_loc.split(".")[:-1])
     if args.ex_forms == []:
         args.ex_forms = ["png"]
+    if args.exclude == None:
+        args.exclude = []
 
     start_time = time.time()
 
-    (nodes, edges, nodes_drawn) = prepare_data(args.file_loc, args.exclude, args.cut)
-    draw_graph(args.file_loc, args.name, args.ex_forms, nodes, edges)
+    (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
+    nodes_drawn = draw_graph(args.file_loc, args.name, args.ex_forms, nodes, edges)
 
     end_time = time.time()
     time_taken = round(end_time - start_time, 2)
