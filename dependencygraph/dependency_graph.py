@@ -24,36 +24,52 @@ import sys
 import argparser
 
 def prepare_data(file_loc, exclude, cut):
-    data = open_csv.parse_csv(file_loc)
-
-    nodes = []
+    nodes = open_csv.parse_csv(file_loc)
     edges = []
-
-    for entry in data:
-        nodes.append(str(entry))
 
     def find_node(target):
         """When given a node ID, will find the matching node's index"""
         i = 0
-        for node in data:
+        for node in nodes:
             if node == target:
                 break
             else:
                 i += 1
         return i
+
+    def remove_unlinked(nodes):
+        for node in nodes:
+            if node.links != []:
+                node.linked = True
+
+                for link in node.links:
+                    linked_node = find_node(link)
+                    nodes[linked_node].linked = True
+
+        for node in nodes:
+            if not node.linked:
+                node.visible = False
+
+    if cut:
+        remove_unlinked(nodes)
     
-    for node in data:
+    for node in nodes:
         if node.visible:
             for link in node.links:
-                end_node = str(node)
                 start_node_index = find_node(link)
-                start_node = str(data[start_node_index])
+                start_node = nodes[start_node_index]
 
-                edges.append((start_node, end_node))
+                if start_node.visible:
+                    edges.append((str(start_node), str(node)))
 
-    return (nodes, edges)
+    node_strings = []
+    for node in nodes:
+        if node.visible:
+            node_strings.append(str(node))
 
-def draw_graph(graph_name, export_formats, nodes, edges):
+    return (node_strings, edges)
+
+def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
 
     graph.add_nodes_from(nodes)
@@ -104,4 +120,4 @@ else:
         args.ex_forms = ["png"]
 
     (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
-    draw_graph(args.name, args.ex_forms, nodes, edges)
+    draw_graph(args.file_loc, args.name, args.ex_forms, nodes, edges)
