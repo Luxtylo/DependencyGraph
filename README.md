@@ -35,3 +35,8 @@ optional arguments:
 ```
 
 As you can see, I intend to add the ability to exclude certain types of nodes, or all unlinked nodes, from the graph.
+
+Dependencies
+============
+* Python 2.7
+* [PyGraphviz](pygraphviz.github.io/index.html)

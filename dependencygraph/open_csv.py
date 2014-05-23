@@ -49,7 +49,7 @@ class Node:
         return node_string
     
     def __eq__(self, other):
-        return self.node_id == other.node_id
+        return self.node_id == other
     
     def __str__(self):
         return self.text
@@ -80,9 +80,9 @@ def parse_csv(csv_loc):
                 node_dict["description"] = node_text
 
                 try:
-                    node_dict["links"] = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else None
+                    node_dict["links"] = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else []
                 except IndexError:
-                    node_dict["links"] = None
+                    node_dict["links"] = []
 
                 try:
                     node_dict["type"] = line[3] if line[3] != "" else None

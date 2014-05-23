@@ -23,64 +23,37 @@ import open_csv
 import sys
 import argparser
 
-def make_graph(file_loc, graph_name, export_formats, exclude, cut):
-    # Each entry stored as id, text, links, type, string
+def prepare_data(file_loc, exclude, cut):
     data = open_csv.parse_csv(file_loc)
 
     nodes = []
     edges = []
 
     for entry in data:
-        nodes.append(entry[-1])
+        nodes.append(str(entry))
 
-    def find_node(link):
-        """Takes a node id and finds the node index"""
-        for j in range(len(data)):
-            entry = data[j]
-            if entry[0] == link:
+    def find_node(target):
+        """When given a node ID, will find the matching node's index"""
+        i = 0
+        for node in data:
+            if node == target:
                 break
-        return j
+            else:
+                i += 1
+        return i
+    
+    for node in data:
+        if node.visible:
+            for link in node.links:
+                end_node = str(node)
+                start_node_index = find_node(link)
+                start_node = str(data[start_node_index])
 
-    if cut:
-        print(str(len(nodes)) + " nodes")
-        linked_nodes = []
+                edges.append((start_node, end_node))
 
-        for j in range(len(data)):
-            try:
-                links = data[j][2]
+    return (nodes, edges)
 
-                if links is not None:
-                    for link in links:
-                        link_index = find_node(link)
-                        linked_nodes.append(data[link_index][-1])
-                        linked_nodes.append(data[j][0])
-            except TypeError:
-                pass
-
-        # remove duplicates
-        linked_nodes = list(set(linked_nodes))
-
-        nodes = list(linked_nodes)
-        print(str(len(nodes)) + " nodes")
-
-        new_data = list(data)
-        for i in range(len(data)-1, -1, -1):
-            if data[i][-1] not in linked_nodes:
-                del new_data[i]
-
-        data = new_data
-        print(len(data))
-
-    for i in range(len(nodes)):
-        links = data[i][2]
-
-        if links is not None:
-            for link in links:
-                from_node = data[i][-1]
-                to_node_index = find_node(link)
-                to_node = data[to_node_index][-1]
-                edges.append((to_node, from_node))
-
+def draw_graph(graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
 
     graph.add_nodes_from(nodes)
@@ -99,11 +72,11 @@ def make_graph(file_loc, graph_name, export_formats, exclude, cut):
     graph.edge_attr["dir"] = "back"
     graph.edge_attr["concentrate"] = "true"
 
-    #graph.layout(prog="dot")
+    graph.layout(prog="dot")
     for ex_for in export_formats:
         try:
             export_file_name = "".join(file_loc.split(".")[:-1]) + "." + ex_for
-            #graph.draw(export_file_name)
+            graph.draw(export_file_name)
         except:
             print("Failed to export graph from " + file_loc + " as " + ex_for)
 
@@ -130,4 +103,5 @@ else:
     if args.ex_forms == []:
         args.ex_forms = ["png"]
 
-    make_graph(args.file_loc, args.name, args.ex_forms, args.exclude, args.cut)
+    (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
+    draw_graph(args.name, args.ex_forms, nodes, edges)
