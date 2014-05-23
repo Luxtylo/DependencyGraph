@@ -22,6 +22,7 @@ import pygraphviz as pgv
 import open_csv
 import sys
 import argparser
+import time
 
 def prepare_data(file_loc, exclude, cut):
     nodes = open_csv.parse_csv(file_loc)
@@ -76,11 +77,13 @@ def prepare_data(file_loc, exclude, cut):
                     edges.append((str(start_node), str(node)))
 
     node_strings = []
+    nodes_drawn = 0
     for node in nodes:
         if node.visible:
+            nodes_drawn += 1
             node_strings.append(str(node))
 
-    return (node_strings, edges)
+    return (node_strings, edges, nodes_drawn)
 
 def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
@@ -132,5 +135,12 @@ else:
     if args.ex_forms == []:
         args.ex_forms = ["png"]
 
-    (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
+    start_time = time.time()
+
+    (nodes, edges, nodes_drawn) = prepare_data(args.file_loc, args.exclude, args.cut)
     draw_graph(args.file_loc, args.name, args.ex_forms, nodes, edges)
+
+    end_time = time.time()
+    time_taken = round(end_time - start_time, 2)
+    
+    print(str(nodes_drawn)+" nodes drawn in "+str(time_taken)+" seconds.")
