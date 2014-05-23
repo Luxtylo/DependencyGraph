@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Dependency Graph - a tool to convert data into dependency graphs
 Copyright (C) 2014 George Bryant
