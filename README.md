@@ -39,4 +39,4 @@ If, in the ``csv`` given to the program, there are nodes which depend on nodes o
 Dependencies
 ============
 * Python 2.7
-* [PyGraphviz](pygraphviz.github.io/index.html)
+* [PyGraphviz](http://pygraphviz.github.io/index.html)
