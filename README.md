@@ -10,7 +10,7 @@ DependencyGraph converts ``csv`` files into ``png`` graphs using ``pygraphviz``.
 * Link to is the object ID of the objects that this node will be linked to. Multiple links can be separated with a newline character
 * Type is the type of entry this node is. In future different colours will be able to be assigned to different types of node.
 
-The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.
+The only compulsory column is the "Object ID" column. The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.
 
 The program's help message (Obtained with ``./dependency_graph.py -h``):
 ```
@@ -34,7 +34,7 @@ optional arguments:
   -x, --cut             remove unlinked nodes
 ```
 
-As you can see, I intend to add the ability to exclude certain types of nodes, or all unlinked nodes, from the graph.
+If, in the ``csv`` given to the program, there are nodes which depend on nodes outside the dataset, the program will generate these nodes with the type "Unknown". These can be ignored by simply using the flag "-e Unknown".
 
 Dependencies
 ============
