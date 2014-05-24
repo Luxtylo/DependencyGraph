@@ -37,6 +37,6 @@ optional arguments:
 If, in the ``csv`` given to the program, there are nodes which depend on nodes outside the dataset, the program will generate these nodes with the type "Unknown". These can be ignored by simply using the flag "-e Unknown".
 
 Dependencies
-============
+------------
 * Python 2.7
 * [PyGraphviz](http://pygraphviz.github.io/index.html)
