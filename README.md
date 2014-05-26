@@ -16,7 +16,7 @@ Usage
 -----
 The program's help message (Obtained with ``./dependency_graph.py -h``):
 ```
-usage: dependency_graph.py [-h] [-c COLS] [-t TITLE] [-o NAME]
+usage: dependency_graph.py [-h] [-c COLS] [-t TITLE] [-d] [-o NAME]
                            [-f {png,jpg,pdf,eps,svg}] [-e TYPE] [-x] [-v]
                            file
 
@@ -36,6 +36,8 @@ optional arguments:
                             y: Node type
   -t TITLE, --title TITLE
                         give the graph a custom title
+  -d, --show-descriptions
+                        show node descriptions (default false)
   -o NAME, --output NAME
                         specify output filename. Do not include extension
   -f {png,jpg,pdf,eps,svg}, --format {png,jpg,pdf,eps,svg}
@@ -46,7 +48,7 @@ optional arguments:
   -v, --verbose         print verbose messages
 ```
 
-The ``-v`` tag is currently not implemented but is a planned feature for the next few commits
+The ``-v`` tag is currently not implemented but is coming soon
 
 If, in the ``csv`` given to the program, there are nodes which depend on nodes outside the dataset, the program will generate these nodes with the type "Unknown". These can be ignored by simply using the flag ``-e Unknown``
 
