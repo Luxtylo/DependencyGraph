@@ -24,8 +24,8 @@ import sys
 import argparser
 import time
 
-def prepare_data(file_loc, exclude, cut):
-    nodes = open_csv.parse_csv(file_loc)
+def prepare_data(file_loc, exclude, cut, columns):
+    nodes = open_csv.parse_csv(file_loc, columns)
     edges = []
 
     def find_node(target):
@@ -121,33 +121,28 @@ def draw_graph(output_loc, graph_name, export_formats, nodes, edges):
 
 args = argparser.parser.parse_args()
 
-if args.csv_help:
-    print("""DependencyGraph converts csv files into png graphs using pygraphviz. The csv files must have a particular structure for each line:  
-  Object ID, Object Text, Link to, Type  
+if args.ex_forms == []:
+    args.ex_forms = ["png"]
+if args.output_loc == "":
+    args.output_loc = "".join(args.file_loc.split(".")[:-1])
 
-    Object ID is the name which will be shown at the top of the node.
-    Object Text is the text which will appear below the object ID
-    Link to is the object ID of the objects that this node will be linked to
-      Multiple links can be separated with a \\n
-    Type is the type of entry this node is
+args.cols = args.cols.lower()
+if args.cols != "itly":
+    if len(args.cols) != 4:
+        raise SystemExit("Column order string should be 4 characters long")
+    elif set(list(args.cols)) != set(["i", "t", "l", "y"]):
+            raise SystemExit("""Column order string should be constructed of chars:
+  i: Node ID
+  t: Node text
+  l: Node links
+  y: Node type""")
 
-  Link to and Type can be left blank
+start_time = time.time()
 
-The csv should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks.""")
-    sys.exit(0)
+(nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut, args.cols)
+nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms, nodes, edges)
 
-else:
-    if args.ex_forms == []:
-        args.ex_forms = ["png"]
-    if args.output_loc == "":
-        args.output_loc = "".join(args.file_loc.split(".")[:-1])
+end_time = time.time()
+time_taken = round(end_time - start_time, 2)
 
-    start_time = time.time()
-
-    (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
-    nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms, nodes, edges)
-
-    end_time = time.time()
-    time_taken = round(end_time - start_time, 2)
-    
-    print(str(nodes_drawn)+" nodes drawn in "+str(time_taken)+" seconds.")
+print(str(nodes_drawn)+" nodes drawn in "+str(time_taken)+" seconds.")

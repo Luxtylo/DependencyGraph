@@ -19,13 +19,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 import argparse
 
-parser = argparse.ArgumentParser(description="Convert csv files into dependency graphs")
+parser = argparse.ArgumentParser(
+        description="Convert csv files into dependency graphs",
+        formatter_class=argparse.RawTextHelpFormatter)
 
 parser.add_argument("file_loc", metavar="file", type=str,
         help="location of the csv file to be converted")
 
-parser.add_argument("-c", "--csv-help", action="store_true",
-        help="show help about csv formatting and exit")
+parser.add_argument("-c", "--column-order", type=str, action="store",
+        default="itly", dest="cols",
+        help="""Specify csv's column order.
+  Default order: itly
+    i: Node ID
+    t: Node text
+    l: Node links
+    y: Node type""")
 
 parser.add_argument("-t", "--title", type=str, action="store",
         default="",
