@@ -24,8 +24,8 @@ import sys
 import argparser
 import time
 
-def prepare_data(file_loc, exclude, cut, columns):
-    nodes = open_csv.parse_csv(file_loc, columns)
+def prepare_data(file_loc, exclude, cut, columns, show_desc):
+    nodes = open_csv.parse_csv(file_loc, columns, show_desc)
     edges = []
 
     def find_node(target):
@@ -139,7 +139,7 @@ if args.cols != "itly":
 
 start_time = time.time()
 
-(nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut, args.cols)
+(nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut, args.cols, args.desc)
 nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms, nodes, edges)
 
 end_time = time.time()

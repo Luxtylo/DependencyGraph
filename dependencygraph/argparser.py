@@ -39,6 +39,9 @@ parser.add_argument("-t", "--title", type=str, action="store",
         default="",
         help="give the graph a custom title")
 
+parser.add_argument("-d", "--show-descriptions", action="store_true", dest="desc",
+        help="show node descriptions (default false)")
+
 parser.add_argument("-o", "--output", type=str, action="store",
         metavar="NAME", default="", dest="output_loc",
         help="specify output filename. Do not include extension")

@@ -23,11 +23,12 @@ import csv
 LINK_SPLIT_CHAR = "\n"
 
 class Node:
-    def __init__(self, node_dict):
+    def __init__(self, node_dict, show_desc):
         self.node_id = node_dict["id"]
         self.links = node_dict["links"]
         self.node_type = node_dict["type"]
         self.desc = node_dict["description"]
+        self.show_desc = show_desc
 
         self.visible = True
         self.linked = False
@@ -38,12 +39,12 @@ class Node:
         node_string = ""
         node_string += self.node_id
 
-        if self.node_type is not None and self.desc is not "":
+        if self.node_type is not None and self.desc is not "" and self.show_desc:
             node_string += "\\n" + self.node_type
             node_string += "\\r\\n" + self.desc
         elif self.node_type is not None:
             node_string += "\\n" + self.node_type
-        elif self.desc is not "":
+        elif self.desc is not "" and self.show_desc:
             node_string += "\\n\\n" + self.desc
 
         return node_string
@@ -60,7 +61,7 @@ class Node:
     def __len__(self):
         return len(self.text)
 
-def parse_csv(csv_loc, columns):
+def parse_csv(csv_loc, columns, show_desc):
     columns = list(columns)
 
     try:
@@ -98,7 +99,7 @@ def parse_csv(csv_loc, columns):
                             except IndexError:
                                 node_dict["type"] = ""
 
-                    node = Node(node_dict)
+                    node = Node(node_dict, show_desc)
                     data.append(node)
 
                 elif first_line == True:
