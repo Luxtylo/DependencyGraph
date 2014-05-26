@@ -15,3 +15,4 @@ This will reduce the non-fun effect of exploding zombies",C_REQ_36,Requirement
 DD_43,The unit shall be made from a lightweight but strong magnesium alloy,"REQ_1
 REQ_47",Detailed Design
 REQ_47,The user should be able to easily lift the unit,Top level,Requirement
+UNLINKED_REQ,This requirement should most definitely not be linked,,Requirement

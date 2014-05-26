@@ -60,3 +60,29 @@ Dependencies
 * Python 2.7
 * [PyGraphviz](http://pygraphviz.github.io/index.html)
 
+Example
+-------
+The contents of dependencygraph/test.csv are as follows:
+```
+Object ID,Object Text,Link To,Type
+Top level,This is the top level object. It is a thing.,,
+C_REQ_11,Must not break.,Top level,Cust Reqt
+C_REQ_23,The bees should not be released.,Top level,Cust Reqt
+C_REQ_36,"When using the device, the user must be safe from exploding zombies
+
+Reasoning:
+Exploding zombies are not fun. Not fun at all.",Top level,Cust Reqt
+REQ_1,The unit shall be made of a strong material to prevent the release of bees,"C_REQ_11
+C_REQ_23",Requirement
+REQ_472,"The unit will be surrounded by a zombie-proof shield
+
+Reasoning:
+This will reduce the non-fun effect of exploding zombies",C_REQ_36,Requirement
+DD_43,The unit shall be made from a lightweight but strong magnesium alloy,"REQ_1
+REQ_47",Detailed Design
+REQ_47,The user should be able to easily lift the unit,Top level,Requirement
+UNLINKED_REQ,This requirement should most definitely not be linked,,Requirement
+```
+
+Running the command ``./dependency_graph.py test.csv -t "Inane Example" -x -e "Detailed Design" -d`` yields the following image:
+![Output of ./dependency_graph.py test.csv -t "Inane Example" -x -e "Detailed Design" -d](notworkingyet)
