@@ -63,47 +63,51 @@ class Node:
 def parse_csv(csv_loc, columns):
     columns = list(columns)
 
-    with open(csv_loc, "r") as csv_file:
-        csv_content = csv.reader(
-                csv_file,
-                delimiter=",",
-                quotechar="\""
-                )
-        data = []
+    try:
+        with open(csv_loc, "r") as csv_file:
+            csv_content = csv.reader(
+                    csv_file,
+                    delimiter=",",
+                    quotechar="\""
+                    )
+            data = []
 
-        first_line = True
-        for line in csv_content:
-            if first_line != True and line[0] != "":
-                node_dict = {}
+            first_line = True
+            for line in csv_content:
+                if first_line != True and line[0] != "":
+                    node_dict = {}
 
-                for n in range(4):
-                    if columns[n] == "i":
-                        node_dict["id"] = line[n]
+                    for n in range(4):
+                        if columns[n] == "i":
+                            node_dict["id"] = line[n]
 
-                    elif columns[n] == "t":
-                        node_text = line[n].replace("\n", "\\l")
-                        node_text = node_text.replace("\r", "\\l") + "\l"
-                        node_dict["description"] = node_text
+                        elif columns[n] == "t":
+                            node_text = line[n].replace("\n", "\\l")
+                            node_text = node_text.replace("\r", "\\l") + "\l"
+                            node_dict["description"] = node_text
 
-                    elif columns[n] == "l":
-                        try:
-                            node_dict["links"] = line[n].split(LINK_SPLIT_CHAR) if line[n] != "" else []
-                        except IndexError:
-                            node_dict["links"] = []
+                        elif columns[n] == "l":
+                            try:
+                                node_dict["links"] = line[n].split(LINK_SPLIT_CHAR) if line[n] != "" else []
+                            except IndexError:
+                                node_dict["links"] = []
 
-                    elif columns[n] == "y":
-                        try:
-                            node_dict["type"] = line[n] if line[n] != "" else ""
-                        except IndexError:
-                            node_dict["type"] = ""
+                        elif columns[n] == "y":
+                            try:
+                                node_dict["type"] = line[n] if line[n] != "" else ""
+                            except IndexError:
+                                node_dict["type"] = ""
 
-                node = Node(node_dict)
-                data.append(node)
+                    node = Node(node_dict)
+                    data.append(node)
 
-            elif first_line == True:
-                first_line = False
+                elif first_line == True:
+                    first_line = False
 
-        return data
+            return data
+          
+    except IOError:
+        raise SystemExit("The file " + csv_loc + " does not exist")
 
 if __name__ == "__main__":
     data = parse_csv("test.csv")
