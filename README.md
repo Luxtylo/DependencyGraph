@@ -85,4 +85,4 @@ UNLINKED_REQ,This requirement should most definitely not be linked,,Requirement
 ```
 
 Running the command ``./dependency_graph.py test.csv -t "Inane Example" -x -e "Detailed Design" -d`` yields the following image:
-![Output of ./dependency_graph.py test.csv -t "Inane Example" -x -e "Detailed Design" -d](https://raw.github.com/Luxtylo/DependencyGraph/master/dependencygraph.test.png)
+![Output of ./dependency_graph.py test.csv -t "Inane Example" -x -e "Detailed Design" -d](dependencygraph/test.png)
