@@ -78,22 +78,22 @@ def parse_csv(csv_loc, columns):
 
                 for n in range(4):
                     if columns[n] == "i":
-                        node_dict["id"] = line[0]
+                        node_dict["id"] = line[n]
 
                     elif columns[n] == "t":
-                        node_text = line[1].replace("\n", "\\l")
+                        node_text = line[n].replace("\n", "\\l")
                         node_text = node_text.replace("\r", "\\l") + "\l"
                         node_dict["description"] = node_text
 
                     elif columns[n] == "l":
                         try:
-                            node_dict["links"] = line[2].split(LINK_SPLIT_CHAR) if line[2] != "" else []
+                            node_dict["links"] = line[n].split(LINK_SPLIT_CHAR) if line[n] != "" else []
                         except IndexError:
                             node_dict["links"] = []
 
                     elif columns[n] == "y":
                         try:
-                            node_dict["type"] = line[3] if line[3] != "" else ""
+                            node_dict["type"] = line[n] if line[n] != "" else ""
                         except IndexError:
                             node_dict["type"] = ""
 
