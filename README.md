@@ -7,10 +7,13 @@ DependencyGraph converts ``csv`` files into dependency graphs using ``pygraphviz
 CSV file structure
 ------------------
 The ``csv`` should be saved with the columns separated by commas, and multiline strings surrounded by quotation marks. Different ``csv`` column orders can be used by using the ``-c`` flag with a four-character string composed of i, t, l and y (The default being ``itly``)
+
 * i = Node ID - the name which will be shown at the top of the node
 * t = Node text - The text which will appear below the object ID
 * l = Node links - The node IDs of the nodes this node will be linked to. Multiple links can be separated with a newline character (although this character can be changed by editing line 23 of open_csv.py to change LINK_SPLIT_CHAR to whatever is desired
 * y = Node type - the type of entry this node is.
+
+The top line of the ``csv`` is ignored, so it can be used for titles
 
 Usage
 -----
@@ -56,3 +59,4 @@ Dependencies
 ------------
 * Python 2.7
 * [PyGraphviz](http://pygraphviz.github.io/index.html)
+
