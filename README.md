@@ -38,7 +38,7 @@ optional arguments:
   -v, --verbose         print verbose messages
 ```
 
-The ``-o`` and ``-v`` tags are currently not implemented but are planned features for the next few commits
+The ``-v`` tag is currently not implemented but is a planned feature for the next few commits
 
 If, in the ``csv`` given to the program, there are nodes which depend on nodes outside the dataset, the program will generate these nodes with the type "Unknown". These can be ignored by simply using the flag "-e Unknown".
 
