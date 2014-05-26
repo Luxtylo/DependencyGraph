@@ -90,7 +90,7 @@ def prepare_data(file_loc, exclude, cut):
 
     return (node_strings, edges)
 
-def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
+def draw_graph(output_loc, graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
 
     graph.add_nodes_from(nodes)
@@ -112,7 +112,7 @@ def draw_graph(file_loc, graph_name, export_formats, nodes, edges):
     graph.layout(prog="dot")
     for ex_for in export_formats:
         try:
-            export_file_name = "".join(file_loc.split(".")[:-1]) + "." + ex_for
+            export_file_name = output_loc + "." + ex_for
             graph.draw(export_file_name)
         except:
             print("Failed to export graph from " + file_loc + " as " + ex_for)
@@ -139,13 +139,13 @@ The csv should be saved with the columns separated by commas, and multiline stri
 else:
     if args.ex_forms == []:
         args.ex_forms = ["png"]
-    if args.exclude == None:
-        args.exclude = []
+    if args.output_loc == "":
+        args.output_loc = "".join(args.file_loc.split(".")[:-1])
 
     start_time = time.time()
 
     (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
-    nodes_drawn = draw_graph(args.file_loc, args.title, args.ex_forms, nodes, edges)
+    nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms, nodes, edges)
 
     end_time = time.time()
     time_taken = round(end_time - start_time, 2)

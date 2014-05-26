@@ -26,20 +26,26 @@ parser.add_argument("file_loc", metavar="file", type=str,
 
 parser.add_argument("-c", "--csv-help", action="store_true",
         help="show help about csv formatting and exit")
+
 parser.add_argument("-t", "--title", type=str, action="store",
         default="",
         help="give the graph a custom title")
+
 parser.add_argument("-o", "--output", type=str, action="store",
-        metavar="NAME", default="",
+        metavar="NAME", default="", dest="output_loc",
         help="specify output filename. Do not include extension")
+
 parser.add_argument("-f", "--format", action="append", default=[], dest="ex_forms",
         choices=["png", "jpg", "pdf", "eps", "svg"],
         help="choose output filetype(s)")
-parser.add_argument("-e", "--exclude", action="append", metavar="TYPE",
+
+parser.add_argument("-e", "--exclude", action="append",
+        default=[], metavar="TYPE",
         help="add node types to exclude")
+
 parser.add_argument("-x", "--cut", action="store_true",
         help="remove unlinked nodes")
-parser.add_argument("-v", "--verbose", action="store_true",
-        help="print verbose messages")
 
+parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
+        help="print verbose messages")
 
