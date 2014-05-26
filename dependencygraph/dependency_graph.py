@@ -137,8 +137,6 @@ The csv should be saved with the columns separated by commas, and multiline stri
     sys.exit(0)
 
 else:
-    if args.name is None:
-        args.name = "".join(args.file_loc.split(".")[:-1])
     if args.ex_forms == []:
         args.ex_forms = ["png"]
     if args.exclude == None:
@@ -147,7 +145,7 @@ else:
     start_time = time.time()
 
     (nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut)
-    nodes_drawn = draw_graph(args.file_loc, args.name, args.ex_forms, nodes, edges)
+    nodes_drawn = draw_graph(args.file_loc, args.title, args.ex_forms, nodes, edges)
 
     end_time = time.time()
     time_taken = round(end_time - start_time, 2)

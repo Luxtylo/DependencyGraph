@@ -19,15 +19,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 import argparse
 
-parser = argparse.ArgumentParser(description="Convert csv files into graphs")
+parser = argparse.ArgumentParser(description="Convert csv files into dependency graphs")
 
 parser.add_argument("file_loc", metavar="file", type=str,
         help="location of the csv file to be converted")
 
 parser.add_argument("-c", "--csv-help", action="store_true",
-        help="show help about csv formatting")
-parser.add_argument("-n", "--name", type=str, action="store",
+        help="show help about csv formatting and exit")
+parser.add_argument("-t", "--title", type=str, action="store",
+        default="",
         help="give the graph a custom title")
+parser.add_argument("-o", "--output", type=str, action="store",
+        metavar="NAME", default="",
+        help="specify output filename. Do not include extension")
 parser.add_argument("-f", "--format", action="append", default=[], dest="ex_forms",
         choices=["png", "jpg", "pdf", "eps", "svg"],
         help="choose output filetype(s)")
@@ -35,5 +39,7 @@ parser.add_argument("-e", "--exclude", action="append", metavar="TYPE",
         help="add node types to exclude")
 parser.add_argument("-x", "--cut", action="store_true",
         help="remove unlinked nodes")
+parser.add_argument("-v", "--verbose", action="store_true",
+        help="print verbose messages")
 
 
