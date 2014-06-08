@@ -37,6 +37,7 @@ class Node:
         self.text = self.make_text()
 
     def make_text(self):
+        """Create node's self-description string"""
         node_string = ""
         node_string += self.node_id
 
@@ -66,6 +67,7 @@ class Node:
 
 
 def parse_csv(csv_loc, columns, show_desc):
+    """Parse CSV file and return data gathered"""
     columns = list(columns)
 
     try:

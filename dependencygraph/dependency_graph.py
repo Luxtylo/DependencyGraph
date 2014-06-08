@@ -25,11 +25,16 @@ import time
 
 
 def prepare_data(file_loc, exclude, cut, columns, show_desc):
+    """Prepare data from csv for graphing.
+
+    Add nodes to list, add edges to second list.
+    Remove unlinked or hide types if necessary.
+    Return lists of node strings and edges"""
     nodes = open_csv.parse_csv(file_loc, columns, show_desc)
     edges = []
 
     def find_node(target):
-        """When given a node ID, will find the matching node's index"""
+        """When given a node ID, find the matching node's index"""
         found = False
         i = 0
         for node in nodes:
@@ -51,6 +56,7 @@ def prepare_data(file_loc, exclude, cut, columns, show_desc):
             return len(nodes) - 1
 
     def remove_unlinked(nodes):
+        """Hide all nodes not linked to"""
         for node in nodes:
             if node.links != []:
                 node.linked = True
@@ -91,6 +97,7 @@ def prepare_data(file_loc, exclude, cut, columns, show_desc):
 
 
 def draw_graph(output_loc, graph_name, export_formats, nodes, edges):
+    """Output graph in given formats from node and edge lists"""
     graph = pgv.AGraph(directed=True)
 
     graph.add_nodes_from(nodes)
