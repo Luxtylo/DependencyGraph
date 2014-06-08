@@ -20,15 +20,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 import argparse
 
 parser = argparse.ArgumentParser(
-        description="Convert csv files into dependency graphs",
-        formatter_class=argparse.RawTextHelpFormatter)
+    description="Convert csv files into dependency graphs",
+    formatter_class=argparse.RawTextHelpFormatter)
 
 parser.add_argument("file_loc", metavar="file", type=str,
-        help="location of the csv file to be converted")
+                    help="location of the csv file to be converted")
 
 parser.add_argument("-c", "--column-order", type=str, action="store",
-        default="itly", dest="cols",
-        help="""Specify csv's column order.
+                    default="itly", dest="cols",
+                    help="""Specify csv's column order.
   Default order: itly
     i: Node ID
     t: Node text
@@ -36,27 +36,26 @@ parser.add_argument("-c", "--column-order", type=str, action="store",
     y: Node type""")
 
 parser.add_argument("-t", "--title", type=str, action="store",
-        default="",
-        help="give the graph a custom title")
+                    default="", help="give the graph a custom title")
 
-parser.add_argument("-d", "--show-descriptions", action="store_true", dest="desc",
-        help="show node descriptions (default false)")
+parser.add_argument("-d", "--show-descriptions", action="store_true",
+                    dest="desc", help="show node descriptions (default false)")
 
 parser.add_argument("-o", "--output", type=str, action="store",
-        metavar="NAME", default="", dest="output_loc",
-        help="specify output filename. Do not include extension")
+                    metavar="NAME", default="", dest="output_loc",
+                    help="specify output filename. Do not include extension")
 
-parser.add_argument("-f", "--format", action="append", default=[], dest="ex_forms",
-        choices=["png", "jpg", "pdf", "eps", "svg"],
-        help="choose output filetype(s)")
+parser.add_argument("-f", "--format", action="append", default=[],
+                    dest="ex_forms",
+                    choices=["png", "jpg", "pdf", "eps", "svg"],
+                    help="choose output filetype(s)")
 
 parser.add_argument("-e", "--exclude", action="append",
-        default=[], metavar="TYPE",
-        help="add node types to exclude")
+                    default=[], metavar="TYPE",
+                    help="add node types to exclude")
 
 parser.add_argument("-x", "--cut", action="store_true",
-        help="remove unlinked nodes")
+                    help="remove unlinked nodes")
 
 parser.add_argument("-v", "--verbose", action="store_true", dest="verbose",
-        help="print verbose messages")
-
+                    help="print verbose messages")

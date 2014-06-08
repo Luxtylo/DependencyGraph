@@ -22,6 +22,7 @@ import csv
 # Replace this with whatever DOORS uses in its CSV files
 LINK_SPLIT_CHAR = "\n"
 
+
 class Node:
     def __init__(self, node_dict, show_desc):
         self.node_id = node_dict["id"]
@@ -39,7 +40,9 @@ class Node:
         node_string = ""
         node_string += self.node_id
 
-        if self.node_type is not None and self.desc is not "" and self.show_desc:
+        if (self.node_type is not None and
+                self.desc is not "" and
+                self.show_desc):
             node_string += "\\n" + self.node_type
             node_string += "\\r\\n" + self.desc
         elif self.node_type is not None:
@@ -48,18 +51,19 @@ class Node:
             node_string += "\\n\\n" + self.desc
 
         return node_string
-    
+
     def __eq__(self, other):
         return self.node_id == other
-    
+
     def __str__(self):
         return self.text
-    
+
     def __repr__(self):
         return repr(self.text)
 
     def __len__(self):
         return len(self.text)
+
 
 def parse_csv(csv_loc, columns, show_desc):
     columns = list(columns)
@@ -67,15 +71,14 @@ def parse_csv(csv_loc, columns, show_desc):
     try:
         with open(csv_loc, "r") as csv_file:
             csv_content = csv.reader(
-                    csv_file,
-                    delimiter=",",
-                    quotechar="\""
-                    )
+                csv_file,
+                delimiter=",",
+                quotechar="\"")
             data = []
 
             first_line = True
             for line in csv_content:
-                if first_line != True and line[0] != "":
+                if not first_line and line[0] != "":
                     node_dict = {}
 
                     for n in range(4):
@@ -89,24 +92,31 @@ def parse_csv(csv_loc, columns, show_desc):
 
                         elif columns[n] == "l":
                             try:
-                                node_dict["links"] = line[n].split(LINK_SPLIT_CHAR) if line[n] != "" else []
+                                if line[n] != "":
+                                    node_dict["links"] = line[n].split(
+                                        LINK_SPLIT_CHAR)
+                                else:
+                                    node_dict["links"] = []
                             except IndexError:
                                 node_dict["links"] = []
 
                         elif columns[n] == "y":
                             try:
-                                node_dict["type"] = line[n] if line[n] != "" else ""
+                                if line[n] != "":
+                                    node_dict["type"] = line[n]
+                                else:
+                                    node_dict["type"] = ""
                             except IndexError:
                                 node_dict["type"] = ""
 
                     node = Node(node_dict, show_desc)
                     data.append(node)
 
-                elif first_line == True:
+                elif first_line:
                     first_line = False
 
             return data
-          
+
     except IOError:
         raise SystemExit("The file " + csv_loc + " does not exist")
 

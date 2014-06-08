@@ -20,9 +20,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 import pygraphviz as pgv
 import open_csv
-import sys
 import argparser
 import time
+
 
 def prepare_data(file_loc, exclude, cut, columns, show_desc):
     nodes = open_csv.parse_csv(file_loc, columns, show_desc)
@@ -39,14 +39,13 @@ def prepare_data(file_loc, exclude, cut, columns, show_desc):
             else:
                 i += 1
 
-        if found == True:
+        if found:
             return i
         else:
-            node_dict = {
-                    "id": target,
-                    "links": [],
-                    "type": "Unknown",
-                    "description": ""}
+            node_dict = {"id": target,
+                         "links": [],
+                         "type": "Unknown",
+                         "description": ""}
             nodes.append(open_csv.Node(node_dict))
 
             return len(nodes) - 1
@@ -90,6 +89,7 @@ def prepare_data(file_loc, exclude, cut, columns, show_desc):
 
     return (node_strings, edges)
 
+
 def draw_graph(output_loc, graph_name, export_formats, nodes, edges):
     graph = pgv.AGraph(directed=True)
 
@@ -115,7 +115,8 @@ def draw_graph(output_loc, graph_name, export_formats, nodes, edges):
             export_file_name = output_loc + "." + ex_for
             graph.draw(export_file_name)
         except:
-            print("Failed to export graph from " + file_loc + " as " + ex_for)
+            print("Failed to export graph from " +
+                  output_loc + " as " + ex_for)
 
     return len(graph.nodes())
 
@@ -131,7 +132,8 @@ if args.cols != "itly":
     if len(args.cols) != 4:
         raise SystemExit("Column order string should be 4 characters long")
     elif set(list(args.cols)) != set(["i", "t", "l", "y"]):
-            raise SystemExit("""Column order string should be constructed of chars:
+            raise SystemExit(
+                """Column order string should be constructed of chars:
   i: Node ID
   t: Node text
   l: Node links
@@ -139,8 +141,10 @@ if args.cols != "itly":
 
 start_time = time.time()
 
-(nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut, args.cols, args.desc)
-nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms, nodes, edges)
+(nodes, edges) = prepare_data(args.file_loc, args.exclude, args.cut,
+                              args.cols, args.desc)
+nodes_drawn = draw_graph(args.output_loc, args.title, args.ex_forms,
+                         nodes, edges)
 
 end_time = time.time()
 time_taken = round(end_time - start_time, 2)
